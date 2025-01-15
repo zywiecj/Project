@@ -1,0 +1,32 @@
+﻿@model List<Webapp.Models.GravityBookstore.Author>
+
+@{
+    ViewBag.Title = "Authors";
+    Layout = "_Layout";
+}
+
+<h2>Authors</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Author Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model)
+        {
+            <tr>
+                <td>@author.AuthorName</td>
+                <td>
+                    <a asp-action="AuthorDetails" asp-route-id="@author.AuthorId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

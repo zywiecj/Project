@@ -1,0 +1,76 @@
+@* filepath: /c:/Users/grzmo/RiderProjects/Project/Webapp/Views/GravityBookstore/Index.cshtml *@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PaginatedList<Webapp.Models.GravityBookstore.BookViewModel>
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Book</a>
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>ISBN-13</th>
+        <th>Pages</th>
+        <th>Publication Date</th>
+        <th>Authors</th>
+        <th>Sold Copies</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Isbn13</td>
+            <td>@item.NumPages</td>
+            <td>@item.PublicationDate</td>
+            <td>
+                <a asp-action="Authors" asp-route-id="@item.BookId">@item.AuthorCount</a>
+            </td>
+            <td>@item.SoldCopies</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.PageIndex != 1 ? "" : "disabled")">
+                <a class="page-link " asp-action="Index" asp-route-page="@(Model.PageIndex == 1)">First Page</a>
+            </li>
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                if (i == Model.PageIndex || i == Model.PageIndex - 1 || i == Model.PageIndex + 1)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                    </li>
+                }
+                else if (i == 1 || i == Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                    </li>
+                }
+                else if (i == Model.PageIndex - 2 || i == Model.PageIndex + 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link " asp-action="Index" asp-route-page="@(Model.TotalPages)">Last Page</a>
+            </li>
+        </ul>
+    </nav>
+</div>
